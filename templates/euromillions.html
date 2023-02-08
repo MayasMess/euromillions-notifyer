@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultat EuroMillions</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .spacenumbers {
+            padding: 3px;
+            color: white;
+            font-weight: bold;
+            margin: 3px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h2 style="text-align: center">Grille Gagnante</h2>
+<table>
+    <tr>
+        <th>Numéros</th>
+        <th>Etoiles</th>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                {% for number in euro_result.numbers %}
+                    <span class="spacenumbers" style="background-color: green;">{{ number }}</span>
+                {% endfor %}
+            </div>
+        </td>
+        <td>
+            <div>
+                {% for star in euro_result.stars %}
+                    <span class="spacenumbers" style="background-color: green;">{{ star }}</span>
+                {% endfor %}
+            </div>
+        </td>
+    </tr>
+</table>
+<h2 style="text-align: center">Vos gains euromillions</h2>
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>Numéros</th>
+        <th>Etoiles</th>
+        <th>Gains</th>
+    </tr>
+    {% for nom, grille in our_grille.items() %}
+        <tr>
+            <td>{{ nom }}</td>
+            <td>
+                <div>
+                    {% for number in grille.numbers %}
+                        <span class="spacenumbers"
+                              style="background-color: {% if number in our_matching_result[nom].numbers %} green {% else %} red {% endif %}"
+                        >{{ number }}</span>
+                    {% endfor %}
+                </div>
+            </td>
+            <td>
+                <div>
+                    {% for star in grille.stars %}
+                        <span class="spacenumbers"
+                              style="background-color: {% if star in our_matching_result[nom].stars %} green {% else %} red {% endif %};"
+                        >{{ star }}</span>
+                    {% endfor %}
+                </div>
+            </td>
+            <td>{{ grille.gains }} €</td>
+        </tr>
+    {% endfor %}
+</table>
+<h1 style="text-align: center">Bravo vous avez gagné <strong>{{ total_gains }} €</strong> {% if total_gains == 0 %} (Bande de nullos) {% endif %}</h1>
+</body>
+</html>
